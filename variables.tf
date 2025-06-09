@@ -3,6 +3,7 @@ variable "vpc_cidr" {
   type        = string
   default = "192.168.0.0/16"
 }
+
 variable "pub_sub_count" {
   description = "Number of public subnets"
   type        = number

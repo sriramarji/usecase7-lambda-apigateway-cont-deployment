@@ -62,8 +62,8 @@ resource "aws_lambda_function" "docker_lambda" {
   package_type = "Image"
   
   #change below image URI
-  image_uri = "495599733393.dkr.ecr.ap-south-1.amazonaws.com/my-app:latest"
-
+  image_uri = "211125784755.dkr.ecr.us-east-1.amazonaws.com/web-app:latest"
+                
   role = aws_iam_role.lambda_exec.arn
 
   timeout     = 30
