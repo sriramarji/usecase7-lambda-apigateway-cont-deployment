@@ -57,7 +57,7 @@ resource "aws_security_group" "lambda_sg" {
 }
 
 resource "aws_lambda_function" "docker_lambda" {
-  function_name = "my-docker-lambda"
+  function_name = "my-lambda"
 
   package_type = "Image"
 
