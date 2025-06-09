@@ -17,3 +17,7 @@ module "api_gateway" {
   source              = "./modules/apigateway"
   integration_uri_arn = module.lambda.integration_uri_arn
 }
+
+module "cloud-watch" {
+  source = "./modules/cloudwatch"
+}

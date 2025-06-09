@@ -1,5 +1,5 @@
 resource "aws_apigatewayv2_api" "http_api" {
-  name          = "lambda-http-api"
+  name          = "http-lambda-api"
   protocol_type = "HTTP"
 }
 
