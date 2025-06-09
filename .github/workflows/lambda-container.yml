@@ -1,11 +1,20 @@
 name: lambda-container-deployment
 
 on:
-  push:
-    branches:
-      - master
+  #push:
+   # branches:
+    #  - master
   workflow_dispatch:
     inputs:
+      environment:
+        description: 'Terraform workspace/environment to use'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - uat
+          - prod
       action:
         description: 'Terraform action to perform'
         required: true
@@ -67,16 +76,21 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Validate 
+      - name: Select Terraform Workspace
+        run: |
+          terraform workspace select ${{ github.event.inputs.environment }} || \
+          terraform workspace new ${{ github.event.inputs.environment }}
+
+      - name: Terraform Validate
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -var-file=workspaces/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars
 
       - name: Terraform Apply
-        if: contains(github.event.head_commit.message, 'terraform apply') || (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'apply')
-        run: terraform apply -auto-approve
+        if: github.event.inputs.action == 'apply'
+        run: terraform apply -auto-approve -var-file=workspaces/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars
 
       - name: Terraform Destroy
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
-        run: terraform destroy -auto-approve
+        if: github.event.inputs.action == 'destroy'
+        run: terraform destroy -auto-approve -var-file=workspaces/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars
