@@ -12,6 +12,7 @@ on:
         default: 'dev'
         type: choice
         options:
+          - default
           - dev
           - uat
           - prod
@@ -30,7 +31,7 @@ permissions:
 
 jobs:
   terraform:
-    name: Docker Build + Terraform Apply/Destroy
+    name: Docker & Terraform Apply/Destroy
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: web-app
@@ -87,10 +88,10 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -var-file=workspaces/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars
 
-      - name: Terraform Apply
-        if: github.event.inputs.action == 'apply'
-        run: terraform apply -auto-approve -var-file=workspaces/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars
+      #- name: Terraform Apply
+      #  if: github.event.inputs.action == 'apply'
+      # run: terraform apply -auto-approve -var-file=workspaces/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars
 
-      - name: Terraform Destroy
-        if: github.event.inputs.action == 'destroy'
-        run: terraform destroy -auto-approve -var-file=workspaces/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars
+      #- name: Terraform Destroy
+      #  if: github.event.inputs.action == 'destroy'
+      #  run: terraform destroy -auto-approve -var-file=workspaces/${{ github.event.inputs.environment }}/${{ github.event.inputs.environment }}.tfvars
