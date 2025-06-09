@@ -7,13 +7,13 @@ module "vpc" {
 }
 
 module "lambda" {
-  source = "./modules/lambda"
-  private_subnet_id = module.vpc.private_subnet_ids
-  vpc_id = module.vpc.vpc_id
+  source               = "./modules/lambda"
+  private_subnet_id    = module.vpc.private_subnet_ids
+  vpc_id               = module.vpc.vpc_id
   aws_apigatewayv2_arn = module.api_gateway.aws_apigatewayv2_arn
-  }
+}
 
 module "api_gateway" {
-  source = "./modules/apigateway"
+  source              = "./modules/apigateway"
   integration_uri_arn = module.lambda.integration_uri_arn
 }

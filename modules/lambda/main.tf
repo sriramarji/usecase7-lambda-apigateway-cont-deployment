@@ -60,10 +60,10 @@ resource "aws_lambda_function" "docker_lambda" {
   function_name = "my-docker-lambda"
 
   package_type = "Image"
-  
+
   #change below image URI
   image_uri = "211125784755.dkr.ecr.us-east-1.amazonaws.com/web-app:latest"
-                
+
   role = aws_iam_role.lambda_exec.arn
 
   timeout     = 30
@@ -79,7 +79,7 @@ resource "aws_lambda_permission" "apigw_invoke" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.docker_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn = var.aws_apigatewayv2_arn
+  source_arn    = var.aws_apigatewayv2_arn
 }
 
 

@@ -1,7 +1,7 @@
 resource "aws_vpc" "main" {
   cidr_block = var.vpc_cidr
   tags = {
-    Name = "Main"
+    Name = "my-vpc"
   }
 }
 
@@ -10,7 +10,7 @@ data "aws_availability_zones" "az" {
 }
 
 resource "aws_subnet" "public" {
-  count                   = var.pub_sub_count
+  count = var.pub_sub_count
 
   vpc_id                  = aws_vpc.main.id
   availability_zone       = element(data.aws_availability_zones.az.names, count.index)
@@ -26,7 +26,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_subnet" "private" {
-  count                   = var.priv_sub_count
+  count = var.priv_sub_count
 
   vpc_id                  = aws_vpc.main.id
   availability_zone       = element(data.aws_availability_zones.az.names, count.index)
@@ -50,7 +50,7 @@ resource "aws_nat_gateway" "nat" {
   subnet_id     = aws_subnet.public[count.index].id
 }
 
-#here need to give count
+
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
   tags = {
@@ -71,7 +71,7 @@ resource "aws_route_table_association" "public" {
 }
 
 resource "aws_route_table" "private" {
-  count  = var.priv_sub_count
+  count = var.priv_sub_count
 
   vpc_id = aws_vpc.main.id
   tags = {
