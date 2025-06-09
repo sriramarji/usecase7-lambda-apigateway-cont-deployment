@@ -30,7 +30,7 @@ permissions:
 
 jobs:
   terraform:
-    name: Docker Build + Terraform Apply/Destroy
+    name: Docker & Terraform Apply/Destroy
     runs-on: ubuntu-latest
     env:
       IMAGE_NAME: web-app
